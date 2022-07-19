@@ -69,7 +69,6 @@ export const usegSheet = defineStore("gSheet", {
   actions: {
     async getData() {
       if (this.data.length || this.loading) return;
-      console.log("We get the data");
       this.loading = true;
       var url =
         "https://opensheet.elk.sh/1l-TeRXFxZ47SudA7At3ClGEEYW8x_lIqkgNZj-f0hq8/2022-07";
@@ -79,7 +78,12 @@ export const usegSheet = defineStore("gSheet", {
           output = output.filter((e) => e.Category);
           output.forEach((e) => {
             if (e.Description) {
-              e.Description = e.Description + "\n\n**Rendez-vous:** " + e.Place;
+              e.Description =
+                e.Description +
+                "\n\n**Rendez-vous:** " +
+                e.Place +
+                " à " +
+                e.TimeStart;
               if (e.Contact)
                 e.Description = e.Description + "\n\n**Contact:** " + e.Contact;
               e.Description = marked.parse(e.Description || "");
@@ -116,7 +120,6 @@ export const usegSheet = defineStore("gSheet", {
               Kids: "bg-cyan-1 text-cyan-10",
             }[e.Category];
           });
-          console.log("Output: ", output);
           return output;
         })
         .catch((err) => console.error(err));
