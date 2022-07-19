@@ -6,8 +6,6 @@
       style="width: 200px; height: 200px"
     />
     {{ gsheet.data }}
-    <hr />
-    <q-btn :label="gsheet.count" @click="gsheet.increment"></q-btn>
   </q-page>
 </template>
 
@@ -20,7 +18,6 @@ export default defineComponent({
   setup() {
     const gsheet = usegSheet();
     gsheet.getData();
-    gsheet.getFramagenda();
     return { gsheet };
   },
 });
