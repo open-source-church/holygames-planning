@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { _ } from "lodash";
 import { marked } from "marked";
+import { date } from "quasar";
 
 export const usegSheet = defineStore("gSheet", {
   state: () => ({
@@ -17,11 +18,38 @@ export const usegSheet = defineStore("gSheet", {
       return _.uniqBy(state.data, "Day").map((e) => e.Day);
     },
     byDay(state) {
-      return (day) =>
-        _.sortBy(
+      return (day) => {
+        if (day == "*") return this.all;
+        var events = _.sortBy(
           state.data.filter((e) => e.Day == day),
           (e) => e.TimeStart
         );
+        var r = [];
+        r.push({ header: true, Name: "Matin", dense: true });
+        var pm = false;
+        var evening = false;
+        events.forEach((e) => {
+          var H = e.TimeStart.split(":")[0];
+          if (H > 12 && !pm) {
+            r.push({ header: true, Name: "Après-midi", dense: true });
+            pm = true;
+          }
+          if (H >= 18 && !evening) {
+            r.push({ header: true, Name: "Soirée", dense: true });
+            evening = true;
+          }
+          r.push(e);
+        });
+        return r;
+      };
+    },
+    all(state) {
+      var all = [];
+      this.days.forEach((d) => {
+        all.push({ header: true, Name: d });
+        this.byDay(d).forEach((e) => all.push(e));
+      });
+      return all;
     },
   },
 
@@ -47,6 +75,16 @@ export const usegSheet = defineStore("gSheet", {
               Jeu: "extension",
               Outdoor: "eco",
               Kids: "child_care",
+            }[e.Category];
+            e.Color = {
+              Hotel: "red",
+              RDV: "red",
+              Spi: "purple",
+              Repas: "brown",
+              JDR: "amber",
+              Jeu: "lime",
+              Outdoor: "light-green",
+              Kids: "cyan",
             }[e.Category];
             e.Classes = {
               Hotel: "bg-red-1 text-red-10",

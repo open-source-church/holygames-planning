@@ -10,8 +10,9 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
-
-        <q-toolbar-title> Horaires holygames </q-toolbar-title>
+        <q-toolbar-title>
+          <q-btn flat to="/"> Horaires holygames </q-btn>
+        </q-toolbar-title>
 
         <div>Juillet 2022</div>
       </q-toolbar>
@@ -22,6 +23,9 @@
         <q-item-label header> Jour de la semaine </q-item-label>
         <q-item v-for="day in gsheet.days" :key="day" :to="day">
           <q-item-section>{{ day }}</q-item-section>
+        </q-item>
+        <q-item to="*">
+          <q-item-section>Toutes les activités</q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
