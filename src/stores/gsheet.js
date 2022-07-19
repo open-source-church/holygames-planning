@@ -51,6 +51,19 @@ export const usegSheet = defineStore("gSheet", {
       });
       return all;
     },
+    categories(state) {
+      var cat = {};
+      this.data.forEach((e) => {
+        if (!(e.Category in Object.keys(cat))) {
+          cat[e.Category] = {
+            icon: e.Icon,
+            color: e.Color,
+            classes: e.Classes,
+          };
+        }
+      });
+      return cat;
+    },
   },
 
   actions: {
@@ -63,8 +76,14 @@ export const usegSheet = defineStore("gSheet", {
       this.data = await fetch(url)
         .then((result) => result.json())
         .then((output) => {
+          output = output.filter((e) => e.Category);
           output.forEach((e) => {
-            e.Description = marked.parse(e.Description || "");
+            if (e.Description) {
+              e.Description = e.Description + "\n\n**Rendez-vous:** " + e.Place;
+              if (e.Contact)
+                e.Description = e.Description + "\n\n**Contact:** " + e.Contact;
+              e.Description = marked.parse(e.Description || "");
+            }
             e.time = `${e.TimeStart} - ${e.TimeEnd}`;
             e.Icon = {
               Hotel: "hotel",

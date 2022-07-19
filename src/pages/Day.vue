@@ -1,11 +1,26 @@
 <template>
   <q-page padding>
-    <h3>{{ day }}</h3>
+    <h4 class="q-mb-md">{{ day }}</h4>
+    <div class="text-center">
+      <q-btn-group push class="q-my-md">
+        <q-btn
+          v-for="(v, k) in gsheet.categories"
+          :key="k"
+          :icon="v.icon"
+          @click="toggleFilter(k)"
+          :push="filterCat.includes(k)"
+          :color="v.color + '-1'"
+          :text-color="v.color"
+        >
+          <q-tooltip class="bg-accent">{{ k }}</q-tooltip>
+        </q-btn>
+      </q-btn-group>
+    </div>
     <q-list>
       <q-expansion-item
         popup
         group="somegroup"
-        v-for="event in gsheet.byDay(day)"
+        v-for="event in filteredEvents"
         :key="event.description"
         expand-separator
         :header-class="event.Classes"
@@ -38,16 +53,30 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref, reactive, computed } from "vue";
 import { usegSheet } from "stores/gsheet";
+import { _ } from "lodash";
 
 export default defineComponent({
   name: "DayPage",
   props: ["day"],
-  setup() {
+  setup(props) {
     const gsheet = usegSheet();
     gsheet.getData();
-    return { gsheet };
+    var cat = ref([]);
+
+    var filterCat = reactive([]);
+    const filteredEvents = computed(() => {
+      var all = gsheet.byDay(props.day);
+      if (filterCat.length == 0) return all;
+      else return all.filter((e) => filterCat.includes(e.Category) || e.header);
+    });
+    const toggleFilter = (k) => {
+      if (filterCat.includes(k)) filterCat.splice(filterCat.indexOf(k), 1);
+      else filterCat.push(k);
+    };
+
+    return { gsheet, cat, filteredEvents, filterCat, toggleFilter };
   },
 });
 </script>
