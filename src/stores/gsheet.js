@@ -7,6 +7,7 @@ export const usegSheet = defineStore("gSheet", {
   state: () => ({
     data: [],
     loading: false,
+    lastUpdated: null,
   }),
 
   getters: {
@@ -67,8 +68,11 @@ export const usegSheet = defineStore("gSheet", {
   },
 
   actions: {
-    async getData() {
-      if (this.data.length || this.loading) return;
+    updateData() {
+      this.getData(true);
+    },
+    async getData(force = false) {
+      if (this.loading || (this.data.length && !force)) return;
       this.loading = true;
       var url =
         "https://opensheet.elk.sh/1l-TeRXFxZ47SudA7At3ClGEEYW8x_lIqkgNZj-f0hq8/2022-07";
@@ -120,6 +124,7 @@ export const usegSheet = defineStore("gSheet", {
               Kids: "bg-cyan-1 text-cyan-10",
             }[e.Category];
           });
+          this.lastUpdated = date.formatDate(Date.now(), "YYYY-MM-DD HH:mm:ss");
           return output;
         })
         .catch((err) => console.error(err));

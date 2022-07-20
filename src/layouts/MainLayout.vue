@@ -28,6 +28,9 @@
           <q-item-section>Toutes les activités</q-item-section>
         </q-item>
       </q-list>
+      <div class="q-mt-xl q-pa-md text-grey text-caption">
+        {{ gsheet.lastUpdated }}
+      </div>
     </q-drawer>
 
     <q-page-container>
@@ -49,6 +52,8 @@ export default defineComponent({
     // On utilise le calendrier
     const gsheet = usegSheet();
     gsheet.getData();
+
+    setInterval(gsheet.updateData, 5 * 60 * 1000);
 
     return {
       gsheet,
