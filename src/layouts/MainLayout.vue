@@ -25,7 +25,7 @@
           ><q-item-section>Informations générales</q-item-section>
         </q-item>
         <q-item-label header>Planning</q-item-label>
-        <q-item v-for="day in gsheet.days" :key="day" :to="day">
+        <q-item v-for="day in gsheet.days" :key="day" :to="`/${day}`">
           <q-item-section>{{ day }}</q-item-section>
         </q-item>
         <q-item to="*">

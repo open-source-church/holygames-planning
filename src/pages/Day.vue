@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <h4 class="q-mb-md" v-if="day !== '*'">{{ day }}</h4>
+    <h4 class="q-my-md" v-if="day !== '*'">{{ day }}</h4>
     <div class="text-center">
       <q-btn-group push class="q-my-md">
         <q-btn
@@ -21,7 +21,10 @@
         popup
         group="somegroup"
         v-for="event in filteredEvents"
-        :key="event.description"
+        :key="event.Index"
+        :id="`item-${event.Index}`"
+        :model-value="index == event.Index"
+        @show="nav(event.Index)"
         expand-separator
         :header-class="event.Classes"
         :header="event.header"
@@ -81,13 +84,16 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, computed } from "vue";
+import { defineComponent, ref, reactive, computed, onMounted } from "vue";
 import { usegSheet } from "stores/gsheet";
 import { _ } from "lodash";
+import { useRouter } from "vue-router";
+import { scroll } from "quasar";
+const { getScrollTarget, setVerticalScrollPosition } = scroll;
 
 export default defineComponent({
   name: "DayPage",
-  props: ["day"],
+  props: ["day", "index"],
   setup(props) {
     const gsheet = usegSheet();
     gsheet.getData();
@@ -104,7 +110,22 @@ export default defineComponent({
       else filterCat.push(k);
     };
 
-    return { gsheet, cat, filteredEvents, filterCat, toggleFilter };
+    const router = useRouter();
+    const nav = (index) => router.replace({ path: `/${props.day}/${index}` });
+
+    const scrollTo = () => {
+      var el = document.getElementById(`item-${props.index}`);
+      if (!el) return setTimeout(scrollTo, 100);
+      const target = getScrollTarget(el);
+      const offset = el.offsetTop;
+      const duration = 1000;
+      setVerticalScrollPosition(target, offset, duration);
+    };
+    onMounted(() => {
+      if (props.index) setTimeout(scrollTo, 100);
+    });
+
+    return { gsheet, cat, filteredEvents, filterCat, toggleFilter, nav };
   },
 });
 </script>

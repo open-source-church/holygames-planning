@@ -81,7 +81,8 @@ export const usegSheet = defineStore("gSheet", {
         .then((output) => {
           // On enlève les éléments vides
           output = output.filter((e) => e.Category);
-          output.forEach((e) => {
+          output.forEach((e, i) => {
+            e.Index = i + 1;
             // Inscriptions
             e.Inscription = e.Inscription == "TRUE";
             e.Slots = parseInt(e.Slots || "0");
