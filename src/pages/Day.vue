@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <h4 class="q-mb-md">{{ day }}</h4>
+    <h4 class="q-mb-md" v-if="day !== '*'">{{ day }}</h4>
     <div class="text-center">
       <q-btn-group push class="q-my-md">
         <q-btn

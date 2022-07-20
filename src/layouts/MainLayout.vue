@@ -20,7 +20,11 @@
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header> Jour de la semaine </q-item-label>
+        <q-item-label header>Info</q-item-label>
+        <q-item to="/bienvenue"
+          ><q-item-section>Informations générales</q-item-section>
+        </q-item>
+        <q-item-label header>Planning</q-item-label>
         <q-item v-for="day in gsheet.days" :key="day" :to="day">
           <q-item-section>{{ day }}</q-item-section>
         </q-item>

@@ -5,6 +5,7 @@ const routes = [
     children: [
       { path: "", component: () => import("pages/IndexPage.vue") },
       { path: ":day", component: () => import("pages/Day.vue"), props: true },
+      { path: "bienvenue", component: () => import("pages/Bienvenue.vue") },
     ],
   },
 

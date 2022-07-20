@@ -107,6 +107,9 @@ export const usegSheet = defineStore("gSheet", {
               if (e.Public) e.Description += `\n\n**Public:** ${e.Public}`;
               if (e.Contact)
                 e.Description = e.Description + "\n\n**Contact:** " + e.Contact;
+              // On remplace // par \n\n
+              e.Description = e.Description.replaceAll("\\", "\n\n");
+              // Et on mouline
               e.Description = marked.parse(e.Description || "");
             }
             e.time = `${e.TimeStart} - ${e.TimeEnd}`;
