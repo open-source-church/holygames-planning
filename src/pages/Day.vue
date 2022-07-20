@@ -34,11 +34,39 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label> {{ event.Name }} </q-item-label>
+            <q-item-label> {{ event.Name }}</q-item-label>
             <q-item-label caption v-if="!event.header">
               <q-badge :color="event.Color">{{ event.Place }}</q-badge>
               {{ event.time }}
+              <q-badge
+                v-if="event.Places"
+                rounded
+                :color="event.Color + '-3'"
+                :text-color="event.Color + '-10'"
+                >{{ event.Places }}</q-badge
+              >
             </q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <div class="row items-center">
+              <q-icon
+                name="how_to_reg"
+                :color="event.Classes"
+                size="24px"
+                v-if="event.Inscription && !event.Full"
+              >
+                <q-tooltip>Sur inscription</q-tooltip>
+              </q-icon>
+              <q-icon
+                name="person_off"
+                :color="event.Classes"
+                size="24px"
+                v-if="event.Inscription && event.Full"
+              >
+                <q-tooltip>Complet</q-tooltip>
+              </q-icon>
+            </div>
           </q-item-section>
         </template>
 

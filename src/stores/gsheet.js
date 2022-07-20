@@ -79,15 +79,32 @@ export const usegSheet = defineStore("gSheet", {
       this.data = await fetch(url)
         .then((result) => result.json())
         .then((output) => {
+          // On enlève les éléments vides
           output = output.filter((e) => e.Category);
           output.forEach((e) => {
+            // Inscriptions
+            e.Inscription = e.Inscription == "TRUE";
+            e.Slots = parseInt(e.Slots || "0");
+            e.Inscrits = parseInt(e.Inscrits || "0");
+            e.Full = e.Inscription && e.Inscrits >= e.Slots;
+            e.Places = e.Slots > 0 ? `${e.Inscrits}/${e.Slots}` : "";
+            // On complète la description
             if (e.Description) {
               e.Description =
                 e.Description +
                 "\n\n**Rendez-vous:** " +
                 e.Place +
                 " à " +
-                e.TimeStart;
+                e.TimeStart +
+                "." +
+                (e.Inscription ? " **Inscription obligatoire!**" : "");
+              if (e.Slots)
+                e.Description += `\n\n**Places restantes:** ${
+                  e.Slots - e.Inscrits
+                } / ${
+                  e.Slots
+                } *(cette valeur n'est peut-être pas à jour, c'est le tableau dans la salle de jeu qui fait foi)*`;
+              if (e.Public) e.Description += `\n\n**Public:** ${e.Public}`;
               if (e.Contact)
                 e.Description = e.Description + "\n\n**Contact:** " + e.Contact;
               e.Description = marked.parse(e.Description || "");
