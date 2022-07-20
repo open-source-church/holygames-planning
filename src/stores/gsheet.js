@@ -2,10 +2,12 @@ import { defineStore } from "pinia";
 import { _ } from "lodash";
 import { marked } from "marked";
 import { date } from "quasar";
+import { reactive } from "vue";
 
 export const usegSheet = defineStore("gSheet", {
   state: () => ({
     data: [],
+    info: {},
     loading: false,
     lastUpdated: null,
   }),
@@ -147,6 +149,19 @@ export const usegSheet = defineStore("gSheet", {
           });
           this.lastUpdated = date.formatDate(Date.now(), "YYYY-MM-DD HH:mm:ss");
           return output;
+        })
+        .catch((err) => console.error(err));
+      this.loading = false;
+    },
+    async getInfo(force = false) {
+      if (this.loading || (this.info.length && !force)) return;
+      this.loading = true;
+      var url =
+        "https://opensheet.elk.sh/1l-TeRXFxZ47SudA7At3ClGEEYW8x_lIqkgNZj-f0hq8/infos";
+      await fetch(url)
+        .then((result) => result.json())
+        .then((output) => {
+          Object.assign(this.info, output[0]);
         })
         .catch((err) => console.error(err));
       this.loading = false;
