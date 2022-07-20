@@ -117,7 +117,7 @@ export const usegSheet = defineStore("gSheet", {
               Repas: "restaurant",
               JDR: "casino",
               Jeu: "extension",
-              Outdoor: "eco",
+              Nature: "eco",
               Kids: "child_care",
             }[e.Category];
             e.Color = {
@@ -127,7 +127,7 @@ export const usegSheet = defineStore("gSheet", {
               Repas: "brown",
               JDR: "amber",
               Jeu: "lime",
-              Outdoor: "light-green",
+              Nature: "light-green",
               Kids: "cyan",
             }[e.Category];
             e.Classes = {
@@ -137,7 +137,7 @@ export const usegSheet = defineStore("gSheet", {
               Repas: "bg-brown-1 text-brown-10",
               JDR: "bg-amber-1 text-amber-10",
               Jeu: "bg-lime-1 text-lime",
-              Outdoor: "bg-light-green-1 text-light-green-10",
+              Nature: "bg-light-green-1 text-light-green-10",
               Kids: "bg-cyan-1 text-cyan-10",
             }[e.Category];
           });
