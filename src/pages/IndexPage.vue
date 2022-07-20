@@ -8,6 +8,13 @@
     />
     <div class="col-8 col-offset-4 row">
       <q-btn
+        color="blue"
+        to="/bienvenue"
+        label="Bienvenue !"
+        icon="info"
+        class="col-12 q-mb-md"
+      />
+      <q-btn
         v-for="day in gsheet.days"
         :key="day"
         :to="day"
