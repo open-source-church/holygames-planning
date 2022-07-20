@@ -86,7 +86,7 @@ export const usegSheet = defineStore("gSheet", {
             e.Inscription = e.Inscription == "TRUE";
             e.Slots = parseInt(e.Slots || "0");
             e.Inscrits = parseInt(e.Inscrits || "0");
-            e.Full = e.Inscription && e.Inscrits >= e.Slots;
+            e.Full = e.Inscription && e.Slots > 0 && e.Inscrits >= e.Slots;
             e.Places = e.Slots > 0 ? `${e.Inscrits}/${e.Slots}` : "";
             // On complète la description
             if (e.Description) {
