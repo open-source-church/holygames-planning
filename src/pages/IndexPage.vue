@@ -1,11 +1,12 @@
 <template>
   <q-page class="flex flex-center row">
-    <img
-      alt="Logo holygames"
-      src="~assets/holygames-logo-tag-vertical.svg"
-      style="width: 200px; height: 200px"
-      class="col-12"
-    />
+    <div class="col-12 text-center">
+      <img
+        alt="Logo holygames"
+        src="~assets/holygames-logo-tag-vertical.svg"
+        style="width: 200px; height: 200px"
+      />
+    </div>
     <div class="col-8 col-offset-4 row">
       <q-btn
         color="blue"
