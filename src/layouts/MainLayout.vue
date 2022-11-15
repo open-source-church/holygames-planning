@@ -82,7 +82,7 @@ const handleLogin = async () => {
       persistent: false,
     }).onOk(async (data) => {
       $q.loading.show();
-      const { error } = await supabase.auth.signIn({ email: data });
+      const { error } = await supabase.auth.signInWithOtp({ email: data });
       if (error) throw error;
       $q.loading.hide();
       $q.dialog({

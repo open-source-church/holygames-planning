@@ -17,16 +17,20 @@ export default defineComponent({
     global.fetchInfo();
     // Subscribe to events modif
     const subscription = supabase
-      .from("holygames-planning-2022-11")
-      .on("*", (d) => {
-        global.fetchPlanning();
-      })
+      .channel("*")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "holygames-planning-2022-11" },
+        (d) => {
+          global.fetchPlanning();
+        }
+      )
       .subscribe();
     // Check for login status change
     supabase.auth.onAuthStateChange((_, session) => {
       global.user = session.user;
     });
-    onMounted(() => (global.user = supabase.auth.user()));
+    // onMounted(async () => (global.user = await supabase.auth.getUser()));
   },
 });
 </script>
