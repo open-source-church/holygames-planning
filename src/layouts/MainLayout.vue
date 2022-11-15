@@ -40,7 +40,7 @@
       <div
         class="q-mt-xl q-pa-md text-grey text-caption"
         v-else
-        @click="handleLogin"
+        @click="signInWithDiscord"
       >
         Login
       </div>
@@ -68,6 +68,11 @@ const toggleLeftDrawer = () => {
 const global = useGlobal();
 const email = ref("");
 const $q = useQuasar();
+const signInWithDiscord = async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "discord",
+  });
+};
 const handleLogin = async () => {
   try {
     $q.dialog({
@@ -97,14 +102,6 @@ const handleLogin = async () => {
   }
 };
 const logout = async () => {
-  try {
-    $q.loading.show();
-    let { error } = await supabase.auth.signOut();
-    if (error) throw error;
-  } catch (error) {
-    alert(error.message);
-  } finally {
-    $q.loading.hide();
-  }
+  const { error } = await supabase.auth.signOut();
 };
 </script>

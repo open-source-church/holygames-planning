@@ -28,7 +28,11 @@ export default defineComponent({
       .subscribe();
     // Check for login status change
     supabase.auth.onAuthStateChange((_, session) => {
-      global.user = session.user;
+      try {
+        global.user = session.user;
+      } catch {
+        global.user = null;
+      }
     });
     // onMounted(async () => (global.user = await supabase.auth.getUser()));
   },
