@@ -75,12 +75,11 @@ export const useGlobal = defineStore("global", {
   getters: {
     admin: (state) =>
       state.user &&
-      state.user.id in
-        [
-          "fdf346ea-bafb-464f-9efd-9aa267392902",
-          "07d80885-6e51-4e12-bb02-7ff968bc2321",
-          "a8c611ae-ddb0-4b5b-b4e7-946354a9b673",
-        ],
+      [
+        "fdf346ea-bafb-464f-9efd-9aa267392902",
+        "07d80885-6e51-4e12-bb02-7ff968bc2321",
+        "a8c611ae-ddb0-4b5b-b4e7-946354a9b673",
+      ].includes(state.user.id),
     srcById(state) {
       console.log(state.eventsSrc);
       return (id) => state.eventsSrc.find((e) => e.id == id);
