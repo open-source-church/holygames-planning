@@ -2,12 +2,12 @@
   <q-page padding>
     <h4 class="q-my-md" v-if="day !== '*'">{{ day }}</h4>
 
-<q-banner class="col-12 bg-orange-3">
-  <template v-slot:avatar>
-    <q-icon name="build" color="orange" />
-  </template>
-  Contenu pas finalisé, revenez dans quelques jours.
-</q-banner>
+    <q-banner class="col-12 bg-orange-3">
+      <template v-slot:avatar>
+        <q-icon name="build" color="orange" />
+      </template>
+      Contenu pas finalisé, revenez dans quelques jours.
+    </q-banner>
     <div class="text-center">
       <q-btn-group push class="q-my-md">
         <q-btn
@@ -41,8 +41,8 @@
         :dense="event.dense"
       >
         <template v-slot:header>
-          <q-item-section avatar v-if="!event.header || event.dense">
-            <q-avatar :icon="event.icon" />
+          <q-item-section avatar v-if="!event.header">
+            <q-avatar :icon="global.classes[event.category].icon" />
           </q-item-section>
 
           <q-item-section>
@@ -103,7 +103,6 @@
 
 <script>
 import { defineComponent, ref, reactive, computed, onMounted } from "vue";
-import { usegSheet } from "stores/gsheet";
 import { useGlobal } from "stores/global";
 import { _ } from "lodash";
 import { useRouter } from "vue-router";
@@ -116,9 +115,7 @@ export default defineComponent({
   props: ["day", "index"],
   // components: { EditDialog },
   setup(props) {
-    const gsheet = usegSheet();
     const global = useGlobal();
-    gsheet.getData();
     var cat = ref([]);
 
     var filterCat = reactive([]);
@@ -156,7 +153,6 @@ export default defineComponent({
     };
 
     return {
-      gsheet,
       global,
       cat,
       filteredEvents,

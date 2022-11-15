@@ -59,11 +59,11 @@ export const useGlobal = defineStore("global", {
         color: "cyan",
         classes: "bg-cyan-1 text-cyan-10",
       },
-      Jeu: {
-        icon: "extension",
-        color: "lime",
-        classes: "bg-lime-1 text-lime",
-      },
+      // Jeu: {
+      //   icon: "extension",
+      //   color: "lime",
+      //   classes: "bg-lime-1 text-lime",
+      // },
       // Nature: {
       //   icon: "eco",
       //   color: "light-green",
@@ -149,7 +149,7 @@ export const useGlobal = defineStore("global", {
           if (e.slots && e.inscription)
             e.description += `\n\n**Places restantes:** ${e.free} / ${e.slots} *(cette valeur n'est peut-être pas à jour, c'est le tableau dans la salle de jeu qui fait foi)*`;
           e.full = e.free == 0;
-          if (e.public) e.description += `\n\n**Public:** ${e.Public}`;
+          if (e.public) e.description += `\n\n**Public:** ${e.public}`;
           if (e.contact)
             e.description = e.description + "\n\n**Contact:** " + e.contact;
           // On remplace // par \n\n
