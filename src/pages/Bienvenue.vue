@@ -2,22 +2,29 @@
   <q-page class="content column full-height">
     <q-tab-panels v-model="tab" animated class="col column">
       <q-tab-panel name="accueil">
-        <div v-html="bienvenue" class="q-mb-xl" />
+        <div v-html="info('accueil')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="info">
-        <div v-html="info" class="q-mb-xl" />
+        <div v-html="info('info')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="jeux">
-        <div v-html="jeux" class="q-mb-xl" />
+        <div v-html="info('jeux')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="kids">
-        <div v-html="kids" class="q-mb-xl" />
+        <div v-html="info('kids')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="salles">
-        <div v-html="salles" class="q-mb-xl" />
+        <div v-html="info('salles')" class="q-mb-xl" />
       </q-tab-panel>
     </q-tab-panels>
     <q-separator />
+    <q-page-sticky
+      position="bottom-right"
+      :offset="[18, 60]"
+      v-if="global.admin"
+    >
+      <q-btn fab icon="edit" color="accent" @click.stop="editInfo(tab)" />
+    </q-page-sticky>
     <q-page-sticky expand position="bottom" class="bg-purple">
       <q-tabs
         v-model="tab"
@@ -38,30 +45,38 @@
 
 <script>
 import { defineComponent, ref, onMounted, computed } from "vue";
-import { usegSheet } from "stores/gsheet";
+import { useGlobal } from "stores/global";
 import { _ } from "lodash";
 import { marked } from "marked";
+import { useQuasar } from "quasar";
+import EditInfoDialog from "components/EditInfoDialog.vue";
 
 export default defineComponent({
   name: "DayPage",
   props: ["day"],
   setup(props) {
-    const gsheet = usegSheet();
-    gsheet.getInfo();
+    const global = useGlobal();
 
-    var bienvenue = computed(() => marked.parse(gsheet.info.bienvenue || ""));
-    var info = computed(() => marked.parse(gsheet.info.info || ""));
-    var kids = computed(() => marked.parse(gsheet.info.kids || ""));
-    var jeux = computed(() => marked.parse(gsheet.info.jeux || ""));
-    var salles = computed(() => marked.parse(gsheet.info.salles || ""));
+    // var bienvenue = computed(() => marked.parse(gsheet.info.bienvenue || ""));
+    // var info = computed(() => marked.parse(gsheet.info.info || ""));
+    // var kids = computed(() => marked.parse(gsheet.info.kids || ""));
+    // var jeux = computed(() => marked.parse(gsheet.info.jeux || ""));
+    // var salles = computed(() => marked.parse(gsheet.info.salles || ""));
+
+    const info = (tab) => marked.parse(global.info(tab));
 
     var tab = ref("accueil");
 
-    onMounted(() => {
-      if (!gsheet.info.bienvenue) setTimeout(gsheet.getInfo, 300);
-    });
+    const $q = useQuasar();
+    const editInfo = (id) => {
+      console.log(tab.value);
+      $q.dialog({
+        component: EditInfoDialog,
+        componentProps: { tab: tab.value },
+      });
+    };
 
-    return { bienvenue, info, kids, jeux, salles, tab, gsheet };
+    return { tab, info, global, editInfo };
   },
 });
 </script>

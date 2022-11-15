@@ -16,7 +16,7 @@
         class="col-12 q-mb-md"
       />
       <q-btn
-        v-for="day in gsheet.days"
+        v-for="day in global.activeDays"
         :key="day"
         :to="day"
         :label="day"
@@ -26,16 +26,9 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { defineComponent } from "vue";
-import { usegSheet } from "stores/gsheet";
+import { useGlobal } from "stores/global";
 
-export default defineComponent({
-  name: "IndexPage",
-  setup() {
-    const gsheet = usegSheet();
-    gsheet.getData();
-    return { gsheet };
-  },
-});
+const global = useGlobal();
 </script>
