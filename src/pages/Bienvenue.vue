@@ -7,6 +7,9 @@
       <q-tab-panel name="info">
         <div v-html="info('info')" class="q-mb-xl" />
       </q-tab-panel>
+      <q-tab-panel name="spi">
+        <div v-html="info('spi')" class="q-mb-xl" />
+      </q-tab-panel>
       <q-tab-panel name="jeux">
         <div v-html="info('jeux')" class="q-mb-xl" />
       </q-tab-panel>
@@ -35,6 +38,7 @@
       >
         <q-tab name="accueil" label="Bienvenue" icon="favorite" />
         <q-tab name="info" label="Infos" icon="info" />
+        <q-tab name="spi" label="Spi" icon="local_fire_department" />
         <q-tab name="jeux" label="Jeux" icon="casino" />
         <q-tab name="kids" label="Enfants" icon="child_care" />
         <q-tab name="salles" label="Salles" icon="location_on" />

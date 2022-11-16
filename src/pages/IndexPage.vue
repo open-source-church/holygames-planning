@@ -11,7 +11,7 @@
       <q-btn
         color="blue"
         to="/bienvenue"
-        label="Bienvenue !"
+        label="Toutes les infos !"
         icon="info"
         class="col-12 q-mb-md"
       />
