@@ -1,6 +1,10 @@
 <template>
-  <q-page class="content column full-height">
-    <q-tab-panels v-model="tab" animated class="col column">
+  <q-page
+    class="content column full-height"
+    v-touch-swipe.left="swipeLeft"
+    v-touch-swipe.right="swipeRight"
+  >
+    <q-tab-panels v-model="tab" animated class="col column full-width">
       <q-tab-panel name="accueil">
         <div v-html="info('accueil')" class="q-mb-xl" />
       </q-tab-panel>
@@ -28,22 +32,22 @@
     >
       <q-btn fab icon="edit" color="accent" @click.stop="editInfo(tab)" />
     </q-page-sticky>
-    <q-page-sticky expand position="bottom" class="bg-purple">
-      <q-tabs
-        v-model="tab"
-        dense
-        class="bg-purple text-white"
-        align="justify"
-        narrow-indicator
-      >
-        <q-tab name="accueil" label="Bienvenue" icon="favorite" />
-        <q-tab name="info" label="Infos" icon="info" />
-        <q-tab name="spi" label="Spi" icon="local_fire_department" />
-        <q-tab name="jeux" label="Jeux" icon="casino" />
-        <q-tab name="kids" label="Enfants" icon="child_care" />
-        <q-tab name="salles" label="Salles" icon="location_on" />
-      </q-tabs>
-    </q-page-sticky>
+    <!-- <q-page-sticky position="bottom" class="bg-purple" style="max-width: 100%"> -->
+    <q-tabs
+      v-model="tab"
+      dense
+      class="bg-purple text-white full-width fixed-bottom"
+      inside-arrows
+      mobile-arrows
+    >
+      <q-tab name="accueil" label="Bienvenue" icon="favorite" />
+      <q-tab name="info" label="Infos" icon="info" />
+      <q-tab name="spi" label="Spi" icon="local_fire_department" />
+      <q-tab name="jeux" label="Jeux" icon="casino" />
+      <q-tab name="kids" label="Enfants" icon="child_care" />
+      <q-tab name="salles" label="Salles" icon="location_on" />
+    </q-tabs>
+    <!-- </q-page-sticky> -->
   </q-page>
 </template>
 
@@ -80,7 +84,16 @@ export default defineComponent({
       });
     };
 
-    return { tab, info, global, editInfo };
+    const tabs = ["accueil", "info", "spi", "jeux", "kids", "salles"];
+    const swipeLeft = () => {
+      tab.value = tabs[(tabs.indexOf(tab.value) + 1) % tabs.length];
+    };
+    const swipeRight = () => {
+      tab.value =
+        tabs[(tabs.indexOf(tab.value) - 1 + tabs.length) % tabs.length];
+    };
+
+    return { tab, info, global, editInfo, swipeLeft, swipeRight };
   },
 });
 </script>
