@@ -39,6 +39,7 @@
       class="bg-purple text-white full-width fixed-bottom"
       inside-arrows
       mobile-arrows
+      @touchstart.stop
     >
       <q-tab name="accueil" label="Bienvenue" icon="favorite" />
       <q-tab name="info" label="Infos" icon="info" />
