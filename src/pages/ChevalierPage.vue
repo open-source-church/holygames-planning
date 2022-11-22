@@ -194,7 +194,7 @@ const unvote = async (id) => {
 const vote = async (name) => {
   if (my_votes.value.map((v) => v.value).includes(name)) {
     // On a déjà voté pour, donc on dévote
-    var id = my_votes.value.find((v) => v.value).id;
+    var id = my_votes.value.find((v) => v.value == name).id;
     unvote(id);
   } else {
     // On vérifie si on a pas déjà fait 3 votes
