@@ -2,12 +2,6 @@
   <q-page padding>
     <h4 class="q-my-md" v-if="day !== '*'">{{ day }}</h4>
 
-    <q-banner class="col-12 bg-orange-3">
-      <template v-slot:avatar>
-        <q-icon name="build" color="orange" />
-      </template>
-      Contenu pas finalisé, revenez dans quelques jours.
-    </q-banner>
     <div class="text-center">
       <q-btn-group push class="q-my-md">
         <q-btn

@@ -188,7 +188,6 @@ export const useGlobal = defineStore("global", {
       const { data } = await supabase.from("holygames-info-2022-11").select();
 
       this.infoSrc = data;
-      console.log(data);
     },
   },
 });

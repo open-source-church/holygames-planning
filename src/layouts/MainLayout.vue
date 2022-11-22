@@ -31,6 +31,10 @@
         <q-item to="*">
           <q-item-section>Toutes les activités</q-item-section>
         </q-item>
+        <q-item-label header>Ludiculte</q-item-label>
+        <q-item to="chevalier">
+          <q-item-section>Le Chevalier Holygames</q-item-section>
+        </q-item>
       </q-list>
       <div class="q-mt-xl q-pa-md text-grey text-caption" v-if="global.user">
         Log en tant que {{ global.user.id }}
@@ -38,11 +42,11 @@
         <a @click="logout">Log out</a>.
       </div>
       <div
-        class="q-mt-xl q-pa-md text-grey text-caption"
+        class="q-mt-xl q-pa-md text-grey-4 text-caption"
         v-else
         @click="signInWithDiscord"
       >
-        Login
+        Login (admin only)
       </div>
     </q-drawer>
 
@@ -69,9 +73,15 @@ const global = useGlobal();
 const email = ref("");
 const $q = useQuasar();
 const signInWithDiscord = async () => {
-  const { error } = await supabase.auth.signInWithOAuth({
+  var options = {
     provider: "discord",
-  });
+  };
+  if (process.env.DEV) {
+    options["options"] = {
+      redirectTo: "http://localhost:9000",
+    };
+  }
+  const { error } = await supabase.auth.signInWithOAuth(options);
 };
 const handleLogin = async () => {
   try {
