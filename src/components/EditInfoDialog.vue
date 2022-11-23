@@ -6,11 +6,19 @@
     transition-hide="rotate"
   >
     <q-card>
-      <q-card-section class="bg-primary text-white">
-        <div class="text-h6">Edit {{ tab }}</div>
-      </q-card-section>
-      <q-card-section class="q-col-gutter-sm column">
-        <q-input v-model="newInfo" filled type="textarea" class="col-12" />
+      <q-toolbar class="bg-primary text-white fixed-top" style="z-index: 1000">
+        <q-toolbar-title> Edit {{ tab }} </q-toolbar-title>
+        <q-btn flat round dense icon="close" v-close-popup />
+        <q-btn icon="check" flat round dense @click="updateEvent" />
+      </q-toolbar>
+      <q-card-section class="q-col-gutter-sm column q-mt-xl">
+        <q-input
+          v-model="newInfo"
+          filled
+          autogrow
+          type="textarea"
+          class="col-12"
+        />
       </q-card-section>
       <q-separator />
       <q-card-actions align="right">
