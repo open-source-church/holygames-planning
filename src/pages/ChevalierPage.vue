@@ -39,14 +39,15 @@
       </div>
       <q-list bordered separator>
         <q-linear-progress
+          v-if="!realtime"
           size="1px"
-          animation-speed="500"
+          animation-speed="1000"
           :value="(now - last_update) / 5000"
         />
         <q-item
           clickable
           v-ripple
-          v-for="v in delayed_values"
+          v-for="v in realtime ? values : delayed_values"
           :key="v.name"
           @click="vote(v.name)"
         >
@@ -89,10 +90,13 @@
 
 <script setup>
 import { onUnmounted, ref, computed, watch } from "vue";
+import { useRoute } from "vue-router";
 import { supabase } from "../supabase";
 import { useGlobal } from "stores/global";
 import { useQuasar } from "quasar";
 import uuid from "uuid-random";
+
+const realtime = computed(() => useRoute().params.realtime != "");
 
 const global = useGlobal();
 const $q = useQuasar();
@@ -196,7 +200,6 @@ const delayed_values = ref(values.value);
 setInterval(() => (now.value = Date.now()), 1000);
 watch(now, () => {
   if (now.value - last_update.value > 5000) {
-    console.log("Update", now.value, last_update.value);
     last_update.value = now.value;
     delayed_values.value = values.value;
   }

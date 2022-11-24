@@ -10,7 +10,11 @@ const routes = [
         props: true,
       },
       { path: "bienvenue", component: () => import("pages/Bienvenue.vue") },
-      { path: "chevalier", component: () => import("src/pages/ChevalierPage.vue") },
+      {
+        path: "chevalier/:realtime?",
+        component: () => import("src/pages/ChevalierPage.vue"),
+        props: true,
+      },
     ],
   },
 
