@@ -38,10 +38,15 @@
         />
       </div>
       <q-list bordered separator>
+        <q-linear-progress
+          size="1px"
+          animation-speed="500"
+          :value="(now - last_update) / 5000"
+        />
         <q-item
           clickable
           v-ripple
-          v-for="v in values"
+          v-for="v in delayed_values"
           :key="v.name"
           @click="vote(v.name)"
         >
@@ -83,7 +88,7 @@
 </template>
 
 <script setup>
-import { onUnmounted, ref, computed } from "vue";
+import { onUnmounted, ref, computed, watch } from "vue";
 import { supabase } from "../supabase";
 import { useGlobal } from "stores/global";
 import { useQuasar } from "quasar";
@@ -182,6 +187,19 @@ const values = computed(() => {
 
 const my_votes = computed(() => {
   return values_data.value.filter((v) => v.user == UUID);
+});
+
+// Delayed updates
+const now = ref(Date.now());
+const last_update = ref(0);
+const delayed_values = ref(values.value);
+setInterval(() => (now.value = Date.now()), 1000);
+watch(now, () => {
+  if (now.value - last_update.value > 5000) {
+    console.log("Update", now.value, last_update.value);
+    last_update.value = now.value;
+    delayed_values.value = values.value;
+  }
 });
 
 const unvote = async (id) => {
