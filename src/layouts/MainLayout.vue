@@ -14,7 +14,7 @@
           <q-btn flat to="/"> Horaires holygames </q-btn>
         </q-toolbar-title>
 
-        <div>Novembre 2022</div>
+        <div>Mai 2023</div>
       </q-toolbar>
     </q-header>
 
@@ -31,10 +31,12 @@
         <q-item to="*">
           <q-item-section>Toutes les activités</q-item-section>
         </q-item>
+        <!--
         <q-item-label header>Ludiculte</q-item-label>
         <q-item to="chevalier">
           <q-item-section>Le Chevalier Holygames</q-item-section>
         </q-item>
+        -->
       </q-list>
       <div class="q-mt-xl q-pa-md text-grey text-caption" v-if="global.user">
         Log en tant que {{ global.user.id }}

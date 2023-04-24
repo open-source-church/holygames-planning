@@ -59,11 +59,11 @@ export const useGlobal = defineStore("global", {
         color: "cyan",
         classes: "bg-cyan-1 text-cyan-10",
       },
-      // Jeu: {
-      //   icon: "extension",
-      //   color: "lime",
-      //   classes: "bg-lime-1 text-lime",
-      // },
+      Jeu: {
+        icon: "extension",
+        color: "lime",
+        classes: "bg-lime-1 text-lime",
+      },
       // Nature: {
       //   icon: "eco",
       //   color: "light-green",
@@ -170,6 +170,11 @@ export const useGlobal = defineStore("global", {
       return (name) => {
         var tab = state.infoSrc.find((i) => i.tab == name);
         return tab ? tab.content : "";
+      };
+    },
+    categoryInfo(state) {
+      return (cat) => {
+        return state.classes[cat] || {};
       };
     },
   },

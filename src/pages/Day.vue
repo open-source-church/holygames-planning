@@ -27,16 +27,14 @@
         :model-value="index == event.id"
         @show="nav(event.id)"
         expand-separator
-        :header-class="
-          event.category ? global.classes[event.category].classes : ''
-        "
+        :header-class="global.categoryInfo(event.category).classes || ''"
         :header="event.header"
         :expand-icon="event.description ? 'expand_more' : 'a'"
         :dense="event.dense"
       >
         <template v-slot:header>
           <q-item-section avatar v-if="!event.header">
-            <q-avatar :icon="global.classes[event.category].icon" />
+            <q-avatar :icon="global.categoryInfo(event.category).icon" />
           </q-item-section>
 
           <q-item-section>
