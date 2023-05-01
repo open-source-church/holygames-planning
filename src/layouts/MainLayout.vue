@@ -28,7 +28,7 @@
         <q-item v-for="day in global.activeDays" :key="day" :to="`/${day}`">
           <q-item-section>{{ day }}</q-item-section>
         </q-item>
-        <q-item to="*">
+        <q-item to="/*">
           <q-item-section>Toutes les activités</q-item-section>
         </q-item>
         <!--
