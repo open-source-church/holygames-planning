@@ -68,7 +68,7 @@ export default defineComponent({
 
     const updateEvent = async () => {
       var d = await supabase
-        .from("holygames-info-2022-11")
+        .from("holygames-info-2023-07")
         .update({ content: newInfo.value })
         .match({ tab: props.tab });
       console.log(d);

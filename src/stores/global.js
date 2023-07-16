@@ -10,13 +10,13 @@ export const useGlobal = defineStore("global", {
     eventsSrc: [],
     infoSrc: [],
     days: [
+      "Dimanche",
       "Lundi",
       "Mardi",
       "Mercredi",
       "Jeudi",
       "Vendredi",
       "Samedi",
-      "Dimanche",
     ],
     categories: [
       "Hotel",
@@ -183,14 +183,14 @@ export const useGlobal = defineStore("global", {
     async fetchPlanning() {
       console.log("Updating data");
       const { data } = await supabase
-        .from("holygames-planning-2022-11")
+        .from("holygames-planning-2023-07")
         .select();
 
       this.eventsSrc = data;
     },
     async fetchInfo() {
       console.log("Updating info");
-      const { data } = await supabase.from("holygames-info-2022-11").select();
+      const { data } = await supabase.from("holygames-info-2023-07").select();
 
       this.infoSrc = data;
     },

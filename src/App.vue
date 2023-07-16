@@ -20,7 +20,7 @@ export default defineComponent({
       .channel("*")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "holygames-planning-2022-11" },
+        { event: "*", schema: "public", table: "holygames-planning-2023-07" },
         (d) => {
           global.fetchPlanning();
         }

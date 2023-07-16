@@ -109,7 +109,7 @@ const sub = supabase
   .channel("*")
   .on(
     "postgres_changes",
-    { event: "*", schema: "public", table: "holygames-chevalier-2022-11" },
+    { event: "*", schema: "public", table: "holygames-chevalier-2023-07" },
     (d) => {
       // Update
       if (d.eventType == "DELETE") {
@@ -134,7 +134,7 @@ const sub = supabase
 const values_data = ref([]);
 const fetch = async () => {
   console.log("Getting data...");
-  const { data } = await supabase.from("holygames-chevalier-2022-11").select();
+  const { data } = await supabase.from("holygames-chevalier-2023-07").select();
   values_data.value = data;
   console.log("done");
 };
@@ -156,7 +156,7 @@ const activate = async (v) => {
   var m = meta.value;
   m.active = v;
   const { error } = await supabase
-    .from("holygames-chevalier-2022-11")
+    .from("holygames-chevalier-2023-07")
     .update({ meta: m })
     .eq("id", 1);
 };
@@ -207,7 +207,7 @@ watch(now, () => {
 
 const unvote = async (id) => {
   const { error } = await supabase
-    .from("holygames-chevalier-2022-11")
+    .from("holygames-chevalier-2023-07")
     .delete()
     .eq("id", id);
 };
@@ -221,7 +221,7 @@ const vote = async (name) => {
     // On vérifie si on a pas déjà fait 3 votes
     if (my_votes.value.length < 3) {
       const { error } = await supabase
-        .from("holygames-chevalier-2022-11")
+        .from("holygames-chevalier-2023-07")
         .insert({ user: UUID, value: name });
     } else {
       $q.notify("Maximum 3 votes par personne ;)");
@@ -255,7 +255,7 @@ const delete_vote = async (name) => {
     message: `Tu vas supprimer tous les votes pour ${name}. Sûr?`,
   }).onOk(async () => {
     const { error } = await supabase
-      .from("holygames-chevalier-2022-11")
+      .from("holygames-chevalier-2023-07")
       .delete()
       .eq("value", name);
   });
