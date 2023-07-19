@@ -24,15 +24,15 @@
           _.uniq(filteredEvents.map((e) => e.place).filter((e) => e)).length + 1
         }*1.3rem);`"
       >
-        <div style="width: 300%; height: 1.3rem" class="text-caption text-grey">
+        <div :style="`width: ${timelineWidth}%; height: 1.3rem`" class="text-caption text-grey">
           <q-icon name="schedule" />
           <div
             v-for="h in _.range(6, 24)"
             :key="h"
             class="absolute text-center"
             :style="{
-              left: ((h - 5 - 0.5) / 19) * 300 + '%',
-              width: (1 / 19) * 300 + '%',
+              left: ((h - 5 - 0.5) / 19) * timelineWidth + '%',
+              width: (1 / 19) * timelineWidth + '%',
               top: 0,
             }"
           >
@@ -46,7 +46,7 @@
           )"
           :key="p"
           :class="`text-caption ${i % 2 == 0 ? 'bg-grey-1' : 'bg-grey-2'}`"
-          style="width: 300%; height: 1.3rem"
+          :style="`width: ${timelineWidth}%; height: 1.3rem`"
         >
           <div class="float-left text-grey-8">{{ p }}</div>
 
@@ -59,8 +59,8 @@
             "
             @click="nav(e.id) && scrollTo()"
             :style="{
-              left: ((timeToInt(e.start) - 5) / 19) * 300 + '%',
-              width: ((timeToInt(e.end) - timeToInt(e.start)) / 20) * 300 + '%',
+              left: ((timeToInt(e.start) - 5) / 19) * timelineWidth + '%',
+              width: ((timeToInt(e.end) - timeToInt(e.start)) / 20) * timelineWidth + '%',
               overflow: 'visible',
               height: '1.25rem',
             }"
@@ -215,4 +215,5 @@ const editEvent = (id) => {
 };
 
 const timeToInt = (time) => ~~time.split(":")[0] + ~~time.split(":")[1] / 60;
+const timelineWidth = computed(() => $q.screen.gt.sm ? 100 : 300)
 </script>
