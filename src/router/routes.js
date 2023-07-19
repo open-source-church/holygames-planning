@@ -6,7 +6,7 @@ const routes = [
       { path: "", component: () => import("pages/IndexPage.vue") },
       {
         path: ":day/:index?",
-        component: () => import("pages/Day.vue"),
+        component: () => import("pages/DayPage.vue"),
         props: true,
       },
       { path: "bienvenue", component: () => import("pages/Bienvenue.vue") },
