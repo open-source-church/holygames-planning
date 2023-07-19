@@ -22,13 +22,7 @@
         class="full-width"
         :style="`height: calc(${
           _.uniq(filteredEvents.map((e) => e.place).filter((e) => e)).length + 1
-        }*1.3rem);
-        background: linear-gradient(90deg, rgba(179,0,255,${
-          scrollLeft ? '15%' : '0'
-        }) 0%, rgba(179,0,255,0) 15%, rgba(179,0,255,0) 85%, rgb(179 0 255 / ${
-          scrollRight ? '15%' : '0'
-        }) 100%);`"
-        @scroll="scrollevent"
+        }*1.3rem);`"
       >
         <div style="width: 300%; height: 1.3rem" class="text-caption text-grey">
           <q-icon name="schedule" />
@@ -221,10 +215,4 @@ const editEvent = (id) => {
 };
 
 const timeToInt = (time) => ~~time.split(":")[0] + ~~time.split(":")[1] / 60;
-const scrollLeft = ref(false);
-const scrollRight = ref(true);
-const scrollevent = (e) => {
-  scrollLeft.value = e.horizontalPosition != 0;
-  scrollRight.value = e.horizontalPosition != 2 * e.horizontalSize;
-};
 </script>
