@@ -39,7 +39,7 @@
             class="text-caption text-grey"
           >
             <div
-              class="float-left text-subtitle2 text-black"
+              class="absolute float-left text-subtitle2 text-black"
               v-if="props.day == '*'"
             >
               {{ day }}
