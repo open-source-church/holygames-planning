@@ -17,62 +17,88 @@
         </q-btn>
       </q-btn-group>
     </div>
-    <div class="row rounded-borders q-pa-xs q-mb-md" v-if="day != '*'">
-      <q-scroll-area
-        class="full-width"
-        :style="`height: calc(${
-          _.uniq(filteredEvents.map((e) => e.place).filter((e) => e)).length + 1
-        }*1.3rem);`"
+    <div class="row" v-for="day in global.days" :key="day">
+      <template
+        v-if="
+          (props.day == '*' || day == props.day) &&
+          filteredEventsByDay(day).filter((e) => !e.header).length
+        "
       >
-        <div :style="`width: ${timelineWidth}%; height: 1.3rem`" class="text-caption text-grey">
-          <q-icon name="schedule" />
-          <div
-            v-for="h in _.range(6, 24)"
-            :key="h"
-            class="absolute text-center"
-            :style="{
-              left: ((h - 5 - 0.5) / 19) * timelineWidth + '%',
-              width: (1 / 19) * timelineWidth + '%',
-              top: 0,
-            }"
-          >
-            {{ h }}h
-          </div>
-        </div>
-
-        <div
-          v-for="(p, i) in _.uniq(
-            filteredEvents.map((e) => e.place).filter((e) => e)
-          )"
-          :key="p"
-          :class="`text-caption ${i % 2 == 0 ? 'bg-grey-1' : 'bg-grey-2'}`"
-          :style="`width: ${timelineWidth}%; height: 1.3rem`"
+        <q-scroll-area
+          class="full-width"
+          :style="`height: calc(${
+            _.uniq(
+              filteredEventsByDay(day)
+                .map((e) => e.place)
+                .filter((e) => e)
+            ).length + 1
+          }*1.3rem);`"
         >
-          <div class="float-left text-grey-8">{{ p }}</div>
-
           <div
-            v-for="e in filteredEvents.filter((e) => e.place == p)"
-            :key="e.id"
-            :class="
-              global.categoryInfo(e.category).classes +
-                ' absolute cursor-pointer' || ''
-            "
-            @click="nav(e.id) && scrollTo()"
-            :style="{
-              left: ((timeToInt(e.start) - 5) / 19) * timelineWidth + '%',
-              width: ((timeToInt(e.end) - timeToInt(e.start)) / 20) * timelineWidth + '%',
-              overflow: 'visible',
-              height: '1.25rem',
-            }"
+            :style="`width: ${timelineWidth}%; height: 1.3rem`"
+            class="text-caption text-grey"
           >
-            <span class="absolute-left q-pl-xs" style="width: max-content">{{
-              e.name
-            }}</span>
+            <div
+              class="float-left text-subtitle2 text-black"
+              v-if="props.day == '*'"
+            >
+              {{ day }}
+            </div>
+            <q-icon name="schedule" v-else />
+            <div
+              v-for="h in _.range(6, 24)"
+              :key="h"
+              class="absolute text-center"
+              :style="{
+                left: ((h - 5 - 0.5) / 19) * timelineWidth + '%',
+                width: (1 / 19) * timelineWidth + '%',
+                top: 0,
+              }"
+            >
+              {{ h }}h
+            </div>
           </div>
 
-          <div class="float-right text-grey-8">{{ p }}</div>
-        </div>
-      </q-scroll-area>
+          <div
+            v-for="(p, i) in _.uniq(
+              filteredEventsByDay(day)
+                .map((e) => e.place)
+                .filter((e) => e)
+            )"
+            :key="p"
+            :class="`text-caption ${i % 2 == 0 ? 'bg-grey-1' : 'bg-grey-2'}`"
+            :style="`width: ${timelineWidth}%; height: 1.3rem`"
+          >
+            <div class="float-left text-grey-8">{{ p }}</div>
+
+            <div
+              v-for="e in filteredEventsByDay(day).filter((e) => e.place == p)"
+              :key="e.id"
+              :class="
+                global.categoryInfo(e.category).classes +
+                  ' absolute cursor-pointer' || ''
+              "
+              @click="nav(e.id) && scrollTo()"
+              :style="{
+                left: ((timeToInt(e.start) - 5) / 19) * timelineWidth + '%',
+                width:
+                  ((timeToInt(e.end) - timeToInt(e.start)) / 20) *
+                    timelineWidth +
+                  '%',
+                overflow: 'visible',
+                height: '1.25rem',
+              }"
+            >
+              <span class="absolute-left q-pl-xs" style="width: max-content">{{
+                e.name
+              }}</span>
+            </div>
+
+            <div class="float-right text-grey-8">{{ p }}</div>
+          </div>
+        </q-scroll-area>
+        <div style="height: 1rem">&nbsp;</div>
+      </template>
     </div>
     <q-list>
       <q-expansion-item
@@ -182,10 +208,13 @@ var cat = ref([]);
 
 var filterCat = reactive([]);
 const filteredEvents = computed(() => {
-  var all = global.byDay(props.day);
+  return filteredEventsByDay(props.day);
+});
+const filteredEventsByDay = (day) => {
+  var all = global.byDay(day);
   if (filterCat.length == 0) return all;
   else return all.filter((e) => filterCat.includes(e.category) || e.header);
-});
+};
 const toggleFilter = (k) => {
   if (filterCat.includes(k)) filterCat.splice(filterCat.indexOf(k), 1);
   else filterCat.push(k);
@@ -215,5 +244,5 @@ const editEvent = (id) => {
 };
 
 const timeToInt = (time) => ~~time.split(":")[0] + ~~time.split(":")[1] / 60;
-const timelineWidth = computed(() => $q.screen.gt.sm ? 100 : 300)
+const timelineWidth = computed(() => ($q.screen.gt.sm ? 100 : 300));
 </script>
