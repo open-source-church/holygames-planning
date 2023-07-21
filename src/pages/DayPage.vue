@@ -69,7 +69,17 @@
             :class="`text-caption ${i % 2 == 0 ? 'bg-grey-1' : 'bg-grey-2'}`"
             :style="`width: ${timelineWidth}%; height: 1.3rem`"
           >
-            <div class="float-left text-grey-8">{{ p }}</div>
+
+          <div v-for="t in [[6.5, 2], [12, 2], [18, 2.5]]" :key="t[0]"
+              :class="`absolute ${i % 2 == 0 ? 'bg-grey-2' : 'bg-grey-3'}`"
+              :style="{
+              left: (t[0] - 5) / 19 * timelineWidth + '%',
+              width: t[1] / 19 * timelineWidth + '%',
+              height: '1.25rem',
+              opacity: .6
+            }" ></div>
+            <div class="absolute text-grey-8" >{{ p }}</div>
+            <div class="float-right text-grey-8" >{{ p }}</div>
 
             <div
               v-for="e in filteredEventsByDay(day).filter((e) => e.place == p)"
@@ -82,7 +92,7 @@
               :style="{
                 left: ((timeToInt(e.start) - 5) / 19) * timelineWidth + '%',
                 width:
-                  ((timeToInt(e.end) - timeToInt(e.start)) / 20) *
+                  ((timeToInt(e.end) - timeToInt(e.start)) / 19) *
                     timelineWidth +
                   '%',
                 overflow: 'visible',
@@ -93,8 +103,6 @@
                 e.name
               }}</span>
             </div>
-
-            <div class="float-right text-grey-8">{{ p }}</div>
           </div>
         </q-scroll-area>
         <div style="height: 1rem">&nbsp;</div>
