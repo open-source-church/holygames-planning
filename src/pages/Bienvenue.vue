@@ -6,15 +6,19 @@
   >
     <q-tab-panels v-model="tab" animated class="col column full-width">
       <q-tab-panel name="accueil">
+        <q-video :ratio="16/9" src="https://www.youtube.com/embed/XIIGx8drZB8" />
         <div v-html="info('accueil')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="info">
+        <q-video :ratio="16/9" src="https://www.youtube.com/embed/bByuRYAB7NU" />
         <div v-html="info('info')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="spi">
+        <q-video :ratio="16/9" src="https://www.youtube.com/embed/lRSDQ_t8pNA" />
         <div v-html="info('spi')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="jeux">
+        <q-video :ratio="16/9" src="https://www.youtube.com/embed/3Ds_SgbWDXs" />
         <div v-html="info('jeux')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="kids">
@@ -72,7 +76,22 @@ export default defineComponent({
     // var jeux = computed(() => marked.parse(gsheet.info.jeux || ""));
     // var salles = computed(() => marked.parse(gsheet.info.salles || ""));
 
-    const info = (tab) => marked.parse(global.info(tab));
+    const formatted = (html) => {
+      // https://www.youtube.com/watch?v=XIIGx8drZB8
+      const frame = `
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/$1"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+</iframe>
+      `;
+      html = html.replaceAll(/https:\/\/www.youtube.com\/watch\?v=([^\s]*)/gi, frame);
+
+      return html;
+    };
+
+    const info = (tab) => marked.parse(formatted(global.info(tab)));
 
     var tab = ref("accueil");
 
