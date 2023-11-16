@@ -20,7 +20,7 @@
       <q-card
         square
         flat
-        v-for="e in filteredEvents.splice(0, 15)"
+        v-for="e in _.sortBy(filteredEvents, ['category', 'day', 'time'])"
         :key="e.id"
         style="width: 9.5cm; height: 13.85cm; margin: 5mm"
         class="column"
@@ -40,7 +40,10 @@
           <div><b>Proposé par:</b> {{ e.contact }}</div>
           <div v-if="e.slots" class="row">
             <span class="col-auto"><b>Places:</b> {{ e.slots }}</span>
-            <span v-if="e.inscription" class="text-italic col text-right text-purple">
+            <span
+              v-if="e.inscription"
+              class="text-italic col text-right text-purple"
+            >
               <q-icon name="warning" class="q-mr-sm" />Inscription
               obligatoire</span
             >
