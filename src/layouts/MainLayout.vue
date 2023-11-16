@@ -50,6 +50,11 @@
       >
         Login (admin only)
       </div>
+      <q-list v-if="global.admin">
+        <q-item to="/fiches">
+          <q-item-section>Fiches activités</q-item-section>
+        </q-item>
+      </q-list>
     </q-drawer>
 
     <q-page-container>

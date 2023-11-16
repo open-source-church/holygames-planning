@@ -34,36 +34,43 @@ export const useGlobal = defineStore("global", {
         icon: "hotel",
         color: "red",
         classes: "bg-red-1 text-red-10",
+        name: "Hôtel"
       },
       RDV: {
         icon: "groups",
         color: "red",
         classes: "bg-red-1 text-red-10",
+        name: "Rendez-vous"
       },
       Spi: {
         icon: "local_fire_department",
         color: "purple",
         classes: "bg-purple-1 text-purple-10",
+        name: "Activités spi et bienfaisantes"
       },
       JDR: {
         icon: "casino",
         color: "amber",
         classes: "bg-amber-1 text-amber-10",
+        name: "Jeux de rôles"
       },
       Repas: {
         icon: "hotel",
         color: "brown",
         classes: "bg-brown-1 text-brown-10",
+        name: "Repas"
       },
       Kids: {
         icon: "child_care",
         color: "cyan",
         classes: "bg-cyan-1 text-cyan-10",
+        name: "Enfance"
       },
       Jeu: {
         icon: "extension",
         color: "lime",
         classes: "bg-lime-1 text-lime-10",
+        name: "Jeux"
       },
       // Nature: {
       //   icon: "eco",
@@ -141,6 +148,7 @@ export const useGlobal = defineStore("global", {
         // On complète la description
         const ftime = (t) => t.split(":").splice(0, 2).join("h");
         if (e.description) {
+          e._description = marked.parse(e.description || "");
           if (e.rdv)
             e.description =
               e.description +
