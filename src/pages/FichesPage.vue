@@ -69,7 +69,7 @@
           "
         >
           <span
-            v-if="inscription"
+            v-if="e.inscription"
             :class="
               'absolute-bottom text-center text-' +
               global.categoryInfo(e.category).color +
@@ -89,7 +89,7 @@
             >Merci d'indiquer si vous pensez participer, ça aide à
             l'organisation</span
           >
-          <b v-if="e.inscription">Inscriptions:</b>
+          <b v-if="e.inscription">Je m'inscris:</b>
           <b v-else>Je pense participer:</b>
         </q-card-section>
       </q-card>
