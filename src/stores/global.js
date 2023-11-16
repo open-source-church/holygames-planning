@@ -70,7 +70,7 @@ export const useGlobal = defineStore("global", {
         icon: "extension",
         color: "lime",
         classes: "bg-lime-1 text-lime-10",
-        name: "Jeux"
+        name: "Jeux de société"
       },
       // Nature: {
       //   icon: "eco",

@@ -23,15 +23,24 @@
         v-for="e in _.sortBy(filteredEvents, ['category', 'day', 'time'])"
         :key="e.id"
         style="width: 9.5cm; height: 13.85cm; margin: 5mm"
-        class="column"
+        :class="'column ' + global.categoryInfo(e.category).color"
       >
-        <q-card-section :class="global.categoryInfo(e.category).classes + ' '">
+        <!-- <q-card-section :class="global.categoryInfo(e.category).classes + ' '"> -->
+        <q-card-section
+          :class="
+            'bg-' + global.categoryInfo(e.category).color + '-10 text-white'
+          "
+        >
+          <div class="absolute-right" style="opacity: 0.2">
+            <q-icon size="6em" :name="global.categoryInfo(e.category).icon" />
+          </div>
           <div class="text-h6">{{ e.name }}</div>
           <div class="text-subtitle2">
+            <q-icon :name="global.categoryInfo(e.category).icon" />
             {{ global.categoryInfo(e.category).name }}
           </div>
         </q-card-section>
-        <q-card-section class="col-auto q-pa-sm" style="font-size: 3.5mm">
+        <q-card-section class="col-auto q-px-sm q-pt-sm q-pb-none" style="font-size: 3.5mm">
           <div v-html="e._description" />
         </q-card-section>
         <q-card-section class="col-auto q-pa-sm">
@@ -42,7 +51,11 @@
             <span class="col-auto"><b>Places:</b> {{ e.slots }}</span>
             <span
               v-if="e.inscription"
-              class="text-italic col text-right text-purple"
+              :class="
+                'text-italic col text-right text-' +
+                global.categoryInfo(e.category).color +
+                '-10'
+              "
             >
               <q-icon name="warning" class="q-mr-sm" />Inscription
               obligatoire</span
@@ -51,18 +64,27 @@
         </q-card-section>
         <q-card-section
           v-if="e.inscription || e.slots"
-          class="col q-pa-sm"
-          style="border: 1px solid purple"
+          :class="
+            'col q-pa-sm bg-' + global.categoryInfo(e.category).color + '-1'
+          "
         >
           <span
             v-if="inscription"
-            class="text-purple float-right text-right"
+            :class="
+              'absolute-bottom text-center text-' +
+              global.categoryInfo(e.category).color +
+              '-10'
+            "
             style="font-size: 2.5mm"
             >Merci de vous inscrire si vous êtes certain d'y participer</span
           >
           <span
             v-else
-            class="text-purple float-right text-right"
+            :class="
+              'absolute-bottom text-center text-' +
+              global.categoryInfo(e.category).color +
+              '-10'
+            "
             style="font-size: 2.5mm"
             >Merci d'indiquer si vous pensez participer, ça aide à
             l'organisation</span
@@ -106,9 +128,22 @@ const toggleFilter = (k) => {
 .fiches p {
   margin-bottom: 8px;
 }
-.fiches b {
-  color: purple;
+.fiches .purple b {
+  color: #4a148c;
 }
+.fiches .red b {
+  color: #b71c1c;
+}
+.fiches .amber b {
+  color: #ff6f00;
+}
+.fiches .lime b {
+  color: #827717;
+}
+.fiches .cyan b {
+  color: #006064;
+}
+
 @media print {
   .no-print,
   .q-drawer-container,
