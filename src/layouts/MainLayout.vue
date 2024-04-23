@@ -14,7 +14,7 @@
           <q-btn flat to="/"> Horaires holygames </q-btn>
         </q-toolbar-title>
 
-        <div>Novembre 2023</div>
+        <div>Avril 2023</div>
       </q-toolbar>
     </q-header>
 
