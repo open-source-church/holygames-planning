@@ -10,14 +10,14 @@ export const useGlobal = defineStore("global", {
     eventsSrc: [],
     infoSrc: [],
     days: [
-      // "Dimanche",
-      // "Lundi",
-      // "Mardi",
-      // "Mercredi",
-      // "Jeudi",
-      "Vendredi",
-      "Samedi",
       "Dimanche",
+      "Lundi",
+      "Mardi",
+      "Mercredi",
+      "Jeudi",
+      "Vendredi",
+      // "Samedi",
+      // "Dimanche",
     ],
     categories: [
       "Hotel",
@@ -34,43 +34,43 @@ export const useGlobal = defineStore("global", {
         icon: "hotel",
         color: "red",
         classes: "bg-red-1 text-red-10",
-        name: "Hôtel"
+        name: "Hôtel",
       },
       RDV: {
         icon: "groups",
         color: "red",
         classes: "bg-red-1 text-red-10",
-        name: "Rendez-vous"
+        name: "Rendez-vous",
       },
       Spi: {
         icon: "local_fire_department",
         color: "purple",
         classes: "bg-purple-1 text-purple-10",
-        name: "Activités spi et bienfaisantes"
+        name: "Activités spi et bienfaisantes",
       },
       JDR: {
         icon: "casino",
         color: "amber",
         classes: "bg-amber-1 text-amber-10",
-        name: "Jeux de rôles"
+        name: "Jeux de rôles",
       },
       Repas: {
         icon: "hotel",
         color: "brown",
         classes: "bg-brown-1 text-brown-10",
-        name: "Repas"
+        name: "Repas",
       },
       Kids: {
         icon: "child_care",
         color: "cyan",
         classes: "bg-cyan-1 text-cyan-10",
-        name: "Enfance"
+        name: "Enfance",
       },
       Jeu: {
         icon: "extension",
         color: "lime",
         classes: "bg-lime-1 text-lime-10",
-        name: "Jeux de société"
+        name: "Jeux de société",
       },
       // Nature: {
       //   icon: "eco",
