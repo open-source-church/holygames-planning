@@ -22,7 +22,14 @@
               :name="e.visible ? 'visibility' : 'visibility_off'"
             />
             <q-icon size="xs" name="star" :color="e.active ? 'orange' : ''" />
-            <q-btn size="12px" flat dense round icon="edit" />
+            <q-btn
+              size="12px"
+              flat
+              dense
+              round
+              icon="edit"
+              @click="editEvent(e.id)"
+            />
           </div>
         </q-item-section>
       </q-item>
@@ -141,13 +148,18 @@ const editEvent = (id) => {
 };
 
 const saveEvent = async () => {
+  var item = _.clone(current.value);
+  delete item.active;
   var d = await supabase
     .from("holygames-planning-events")
-    .update(current.value)
+    .update(item)
     .match({ id: current.value.id });
   console.log(d);
-  global.fetchEvents();
-  current.value = {};
+  if (current.value.active) setActiveEvent(current.value.id);
+  else {
+    global.fetchEvents();
+    current.value = {};
+  }
 };
 
 const addEvent = async () => {
@@ -164,6 +176,23 @@ const deleteEvent = async () => {
     .delete()
     .eq("id", current.value.id);
   console.log(d);
+  current.value = {};
+  global.fetchEvents();
+};
+
+const setActiveEvent = async (id) => {
+  // Remove active event
+  var currentActiveId = global.eventsList.find((e) => e.active);
+  if (currentActiveId)
+    await supabase
+      .from("holygames-planning-events")
+      .update({ active: null })
+      .match({ id: currentActiveId.id });
+  // Set active event
+  await supabase
+    .from("holygames-planning-events")
+    .update({ active: true })
+    .match({ id: current.value.id });
   current.value = {};
   global.fetchEvents();
 };

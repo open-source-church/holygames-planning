@@ -11,10 +11,34 @@
           @click="toggleLeftDrawer"
         />
         <q-toolbar-title>
-          <q-btn flat to="/"> Horaires holygames </q-btn>
+          <q-btn flat to="/">Horaires </q-btn>
         </q-toolbar-title>
 
-        <div>Été 2024</div>
+        <!-- <div>Été 2024</div> -->
+        <q-select
+          dark
+          square
+          filled
+          :options="global.eventsList.filter((e) => e.visible)"
+          v-model="global.currentEventId"
+          option-label="name"
+          option-value="id"
+          label-color="white"
+          emit-value
+          map-options
+          :label="
+            global.eventsList.find((e) => e.id == global.currentEventId)?.date
+          "
+        >
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps">
+              <q-item-section>
+                <q-item-label>{{ scope.opt.name }}</q-item-label>
+                <q-item-label caption>{{ scope.opt.date }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
       </q-toolbar>
     </q-header>
 

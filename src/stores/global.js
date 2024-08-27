@@ -7,9 +7,12 @@ import { date } from "quasar";
 export const useGlobal = defineStore("global", {
   state: () => ({
     user: null,
+    // List of all holygames events
     eventsList: [],
     eventsSrc: [],
     infoSrc: [],
+    // Id of the currently display event
+    currentEventId: null,
     days: [
       "Dimanche",
       "Lundi",
@@ -187,6 +190,9 @@ export const useGlobal = defineStore("global", {
         return state.classes[cat] || {};
       };
     },
+    currentActiveEvent(state) {
+      return state.eventsList.find((e) => e.active);
+    },
   },
 
   actions: {
@@ -204,6 +210,7 @@ export const useGlobal = defineStore("global", {
         .select();
       console.log(data);
       this.eventsList = _.sortBy(data, "start");
+      this.currentEventId = data.find((e) => e.active).id;
     },
     async fetchInfo() {
       console.log("Updating info");
