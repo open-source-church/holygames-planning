@@ -3,7 +3,7 @@ import { _ } from "lodash";
 import { marked } from "marked";
 import { supabase } from "../supabase";
 import { date } from "quasar";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 
 export const useGlobal = defineStore("global", () => {
   const user = ref(null);
@@ -203,11 +203,12 @@ export const useGlobal = defineStore("global", () => {
     return eventsList.value.find((e) => e.active);
   });
 
-  const fetchPlanning = async () => {
-    console.log("Updating data");
-    const { data } = await supabase.from("holygames-planning-2023-07").select();
-    eventsSrc.value = data;
-  };
+  watch(currentEventId, () => {
+    console.log("Current active event:", currentEventId.value);
+    fetchPlanning();
+    fetchInfo();
+  });
+
   const fetchEvents = async () => {
     console.log("Updating events");
     const { data } = await supabase.from("holygames-planning-events").select();
@@ -215,9 +216,29 @@ export const useGlobal = defineStore("global", () => {
     eventsList.value = _.sortBy(data, "start");
     currentEventId.value = data.find((e) => e.active).id;
   };
+
+  const fetchPlanning = async () => {
+    if (!currentActiveEvent.value) {
+      console.log("fetchPlanning: No active event set.");
+      return;
+    }
+    console.log("Updating activities for event ", currentEventId.value);
+    const { data } = await supabase
+      .from("holygames-planning-activities")
+      .select()
+      .eq("event", currentEventId.value);
+    eventsSrc.value = data;
+  };
   const fetchInfo = async () => {
-    console.log("Updating info");
-    const { data } = await supabase.from("holygames-info-2023-07").select();
+    if (!currentActiveEvent.value) {
+      console.log("fetchInfo: No active event set.");
+      return;
+    }
+    console.log("Updating info for event ", currentEventId.value);
+    const { data } = await supabase
+      .from("holygames-planning-info")
+      .select()
+      .eq("event", currentEventId.value);
 
     infoSrc.value = data;
   };

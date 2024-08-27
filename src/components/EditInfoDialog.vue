@@ -67,10 +67,33 @@ export default defineComponent({
     );
 
     const updateEvent = async () => {
-      var d = await supabase
-        .from("holygames-info-2023-07")
-        .update({ content: newInfo.value })
-        .match({ tab: props.tab });
+      console.log("Current Id:", global.currentEventId);
+      // Does info exists for that event ?
+      var test = global.infoSrc.find(
+        (i) => i.tab == props.tab && i.event == global.currentEventId
+      );
+      console.log(
+        "TEST:",
+        test,
+        global.infoSrc,
+        props.tab,
+        global.currentEventId
+      );
+      if (
+        global.infoSrc.find(
+          (i) => i.tab == props.tab && i.event == global.currentEventId
+        )
+      )
+        var d = await supabase
+          .from("holygames-planning-info")
+          .update({ content: newInfo.value })
+          .match({ tab: props.tab, event: global.currentEventId });
+      else
+        var d = await supabase.from("holygames-planning-info").insert({
+          content: newInfo.value,
+          tab: props.tab,
+          event: global.currentEventId,
+        });
       console.log(d);
       global.fetchInfo();
       onDialogOK();

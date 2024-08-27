@@ -176,7 +176,7 @@ export default defineComponent({
     const updateEvent = async () => {
       var e = _.clone(newEvent.value);
       var d = await supabase
-        .from("holygames-planning-2023-07")
+        .from("holygames-planning-activities")
         .update(e)
         .match({ id: props.id });
       console.log(d);
@@ -186,7 +186,7 @@ export default defineComponent({
     const createEvent = async () => {
       var e = _.clone(newEvent.value);
       delete e.id;
-      var d = await supabase.from("holygames-planning-2023-07").insert(e);
+      var d = await supabase.from("holygames-planning-activities").insert(e);
       console.log(d);
       onDialogOK();
     };
@@ -194,7 +194,7 @@ export default defineComponent({
     const deleteEvent = async () => {
       var e = _.clone(newEvent.value);
       var d = await supabase
-        .from("holygames-planning-2023-07")
+        .from("holygames-planning-activities")
         .delete()
         .match({ id: props.id });
       console.log(d);

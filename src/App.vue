@@ -11,15 +11,15 @@ const global = useGlobal();
 // Update holygame events
 global.fetchEvents();
 // Update events
-global.fetchPlanning();
+// global.fetchPlanning();
 // Update info
-global.fetchInfo();
+// global.fetchInfo();
 // Subscribe to events modif
 const subscription = supabase
   .channel("*")
   .on(
     "postgres_changes",
-    { event: "*", schema: "public", table: "holygames-planning-2023-07" },
+    { event: "*", schema: "public", table: "holygames-planning-activities" },
     (d) => {
       global.fetchPlanning();
     }
