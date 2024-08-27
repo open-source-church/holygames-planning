@@ -7,6 +7,7 @@ import { date } from "quasar";
 export const useGlobal = defineStore("global", {
   state: () => ({
     user: null,
+    eventsList: [],
     eventsSrc: [],
     infoSrc: [],
     days: [
@@ -194,8 +195,15 @@ export const useGlobal = defineStore("global", {
       const { data } = await supabase
         .from("holygames-planning-2023-07")
         .select();
-
       this.eventsSrc = data;
+    },
+    async fetchEvents() {
+      console.log("Updating events");
+      const { data } = await supabase
+        .from("holygames-planning-events")
+        .select();
+      console.log(data);
+      this.eventsList = _.sortBy(data, "start");
     },
     async fetchInfo() {
       console.log("Updating info");

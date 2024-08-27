@@ -54,6 +54,9 @@
         <q-item to="/fiches">
           <q-item-section>Fiches activités</q-item-section>
         </q-item>
+        <q-item to="/events">
+          <q-item-section>Gestion des événements</q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 

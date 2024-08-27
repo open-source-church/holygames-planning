@@ -1,5 +1,11 @@
 <template>
   <q-page padding>
+    <q-banner inline-actions class="text-white bg-info no-print">
+      <template v-slot:avatar>
+        <q-icon name="print" color="white" />
+      </template>
+      Sélectionne les catégories des activités dont tu veux faire des fiches, puis imprime (<q-badge color="grey">CTRL+P</q-badge>) via le navigateur.
+    </q-banner>
     <div class="text-center no-print">
       <q-btn-group push class="q-my-md">
         <q-btn
@@ -15,7 +21,6 @@
         </q-btn>
       </q-btn-group>
     </div>
-
     <div class="row fiches">
       <q-card
         square
