@@ -14,16 +14,16 @@ export const useGlobal = defineStore("global", () => {
   const infoSrc = ref([]);
   // Id of the currently display event
   const currentEventId = ref(null);
-  const days = ref([
-    "Dimanche",
-    "Lundi",
-    "Mardi",
-    "Mercredi",
-    "Jeudi",
-    "Vendredi",
-    // "Samedi",
-    // "Dimanche",
-  ]);
+  // const days = ref([
+  //   "Dimanche",
+  //   "Lundi",
+  //   "Mardi",
+  //   "Mercredi",
+  //   "Jeudi",
+  //   "Vendredi",
+  //   // "Samedi",
+  //   // "Dimanche",
+  // ]);
 
   const categories = ref([
     "Hotel",
@@ -182,10 +182,6 @@ export const useGlobal = defineStore("global", () => {
     return r;
   };
 
-  const activeDays = computed(() => {
-    return days.value.filter((d) => byDay(d).length);
-  });
-
   const info = computed(() => {
     return (name) => {
       var tab = infoSrc.value.find((i) => i.tab == name);
@@ -201,6 +197,10 @@ export const useGlobal = defineStore("global", () => {
 
   const currentActiveEvent = computed(() => {
     return eventsList.value.find((e) => e.active);
+  });
+
+  const currentEvent = computed(() => {
+    return eventsList.value.find((e) => e.id == currentEventId.value) || {};
   });
 
   watch(currentEventId, () => {
@@ -243,6 +243,33 @@ export const useGlobal = defineStore("global", () => {
     infoSrc.value = data;
   };
 
+  const dayRange = (start, end) => {
+    return date.getDateDiff(end, start, "days") + 1;
+  };
+
+  const daysNames = (start, end) => {
+    const NAMES = [
+      "Dimanche",
+      "Lundi",
+      "Mardi",
+      "Mercredi",
+      "Jeudi",
+      "Vendredi",
+      "Samedi",
+    ];
+    var s = date.formatDate(start, "d");
+    s = parseInt(s);
+    var r = [];
+    for (var i = 0; i < dayRange(start, end); i++) {
+      r.push(NAMES[(s + i) % 7]);
+    }
+    return r;
+  };
+
+  const days = computed(() => {
+    return daysNames(currentEvent.value.start, currentEvent.value.end);
+  });
+
   return {
     user,
     eventsList,
@@ -255,7 +282,6 @@ export const useGlobal = defineStore("global", () => {
     admin,
     srcById,
     all,
-    activeDays,
     byDay,
     events,
     info,
@@ -264,5 +290,8 @@ export const useGlobal = defineStore("global", () => {
     fetchPlanning,
     fetchEvents,
     fetchInfo,
+    dayRange,
+    daysNames,
+    currentEvent,
   };
 });

@@ -102,6 +102,19 @@
           </q-input>
         </div>
       </q-card-section>
+      <q-banner
+        class="text-white bg-red"
+        v-if="
+          global.dayRange(current.start, current.end) < 1 ||
+          global.dayRange(current.start, current.end) > 7
+        "
+      >
+        <template v-slot:avatar>
+          <q-icon name="error" color="white" />
+        </template>
+        La durée doit être en 1 et 7 jours, et pas
+        {{ global.dayRange(current.start, current.end) }}</q-banner
+      >
       <q-separator />
 
       <q-card-actions horizontal align="right">

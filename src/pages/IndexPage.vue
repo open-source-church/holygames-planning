@@ -16,7 +16,7 @@
         class="col-12 q-mb-md"
       />
       <q-btn
-        v-for="day in global.activeDays"
+        v-for="day in global.days"
         :key="day"
         :to="day"
         :label="day"

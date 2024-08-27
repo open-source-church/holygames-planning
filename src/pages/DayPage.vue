@@ -1,6 +1,17 @@
 <template>
   <q-page padding>
     <h4 class="q-my-md" v-if="day !== '*'">{{ day }}</h4>
+    <div class="text-center">
+      <q-btn
+        v-if="global.admin && day != '*'"
+        flat
+        icon="add"
+        color="positive"
+        class="q-ml-md"
+        label="Ajouter une activité"
+        @click="addActivity"
+      />
+    </div>
 
     <div class="text-center">
       <q-btn-group push class="q-my-md">
@@ -69,17 +80,23 @@
             :class="`text-caption ${i % 2 == 0 ? 'bg-grey-1' : 'bg-grey-2'}`"
             :style="`width: ${timelineWidth}%; height: 1.3rem`"
           >
-
-          <div v-for="t in [[6.5, 2], [12, 2], [18, 2.5]]" :key="t[0]"
+            <div
+              v-for="t in [
+                [6.5, 2],
+                [12, 2],
+                [18, 2.5],
+              ]"
+              :key="t[0]"
               :class="`absolute ${i % 2 == 0 ? 'bg-grey-2' : 'bg-grey-3'}`"
               :style="{
-              left: (t[0] - 5) / 19 * timelineWidth + '%',
-              width: t[1] / 19 * timelineWidth + '%',
-              height: '1.25rem',
-              opacity: .6
-            }" ></div>
-            <div class="absolute text-grey-8" >{{ p }}</div>
-            <div class="float-right text-grey-8" >{{ p }}</div>
+                left: ((t[0] - 5) / 19) * timelineWidth + '%',
+                width: (t[1] / 19) * timelineWidth + '%',
+                height: '1.25rem',
+                opacity: 0.6,
+              }"
+            ></div>
+            <div class="absolute text-grey-8">{{ p }}</div>
+            <div class="float-right text-grey-8">{{ p }}</div>
 
             <div
               v-for="e in filteredEventsByDay(day).filter((e) => e.place == p)"
@@ -206,6 +223,7 @@ import { _ } from "lodash";
 import { useRouter } from "vue-router";
 import { scroll, useQuasar } from "quasar";
 import EditDialog from "components/EditDialog.vue";
+import { supabase } from "../supabase";
 const { getScrollTarget, setVerticalScrollPosition } = scroll;
 
 const props = defineProps(["day", "index"]);
@@ -253,4 +271,14 @@ const editEvent = (id) => {
 
 const timeToInt = (time) => ~~time.split(":")[0] + ~~time.split(":")[1] / 60;
 const timelineWidth = computed(() => ($q.screen.gt.sm ? 100 : 300));
+
+const addActivity = async () => {
+  var d = await supabase.from("holygames-planning-activities").insert({
+    day: props.day,
+    name: "Nouvelle activité",
+    event: global.currentEventId,
+    start: "09:00",
+    end: "10:00"
+  });
+};
 </script>
