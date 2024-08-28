@@ -36,6 +36,10 @@
     </q-list>
 
     <q-card class="q-mt-md" v-if="current.id">
+      <q-card-section class="bg-secondary text-white">
+        <div class="text-h6">{{ current.name }}</div>
+        <div class="text-subtitle2">Modifier l'événement</div>
+      </q-card-section>
       <q-card-section>
         <div class="row q-col-gutter-sm">
           <q-input
@@ -51,7 +55,19 @@
             v-model="current.date"
           />
           <q-toggle class="col-6" v-model="current.visible" label="Visible" />
-          <q-toggle class="col-6" v-model="current.active" label="Active" />
+          <div class="col-6 row justify-between">
+            <q-toggle
+              class="col"
+              v-model="current.active"
+              label="Événement actif"
+            />
+            <q-btn class="col-auto" icon="info" flat>
+              <q-tooltip
+                >L'événement actif est celui qui s'affiche pour les gens pas
+                admins. Il ne peut y en avoir qu'un.</q-tooltip
+              >
+            </q-btn>
+          </div>
           <q-input
             filled
             class="col-6"

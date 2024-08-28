@@ -32,6 +32,7 @@ supabase.auth.onAuthStateChange((_, session) => {
   } catch {
     global.user = null;
   }
+  global.checkAdmin();
 });
 // onMounted(async () => (global.user = await supabase.auth.getUser()));
 

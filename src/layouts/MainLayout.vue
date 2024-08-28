@@ -14,31 +14,31 @@
           <q-btn flat to="/">Horaires </q-btn>
         </q-toolbar-title>
 
-        <!-- <div>Été 2024</div> -->
-        <q-select
-          dark
-          square
-          filled
-          :options="global.eventsList.filter((e) => e.visible)"
-          v-model="global.currentEventId"
-          option-label="name"
-          option-value="id"
-          label-color="white"
-          emit-value
-          map-options
-          :label="
-            global.eventsList.find((e) => e.id == global.currentEventId)?.date
-          "
+        <div
+          class="column text-right"
+          @click="global.admin ? dropdown.show() : null"
         >
-          <template v-slot:option="scope">
-            <q-item v-bind="scope.itemProps">
+          <span class="text-subtitle2">{{ global.currentEvent.name }}</span>
+          <span class="text-caption">{{ global.currentEvent.date }}</span>
+        </div>
+        <q-btn-dropdown round flat ref="dropdown" v-if="global.admin">
+          <q-list>
+            <q-item
+              v-for="e in global.eventsList.filter((e) => e.visible)"
+              :key="e.id"
+              clickable
+              v-ripple
+              v-close-popup
+              :class="e.id == global.currentEventId ? 'bg-teal-3' : ''"
+              @click="global.currentEventId = e.id"
+            >
               <q-item-section>
-                <q-item-label>{{ scope.opt.name }}</q-item-label>
-                <q-item-label caption>{{ scope.opt.date }}</q-item-label>
+                <q-item-label>{{ e.name }}</q-item-label>
+                <q-item-label caption>{{ e.date }}</q-item-label>
               </q-item-section>
             </q-item>
-          </template>
-        </q-select>
+          </q-list>
+        </q-btn-dropdown>
       </q-toolbar>
     </q-header>
 
@@ -62,24 +62,37 @@
         </q-item>
         -->
       </q-list>
-      <div class="q-mt-xl q-pa-md text-grey text-caption" v-if="global.user">
-        Log en tant que {{ global.user.id }}
-        <span v-if="global.admin">(admin) </span>
-        <a @click="logout">Log out</a>.
-      </div>
       <div
         class="q-mt-xl q-pa-md text-grey-4 text-caption"
-        v-else
+        v-if="!global.user"
         @click="signInWithDiscord"
       >
         Login (admin only)
       </div>
-      <q-list v-if="global.admin">
-        <q-item to="/fiches">
+      <q-list v-if="global.user" class="q-mt-xl">
+        <q-item-label header v-if="global.admin">Admin</q-item-label>
+        <q-item to="/fiches" v-if="global.admin">
           <q-item-section>Fiches activités</q-item-section>
         </q-item>
-        <q-item to="/events">
+        <q-item to="/events" v-if="global.admin">
           <q-item-section>Gestion des événements</q-item-section>
+        </q-item>
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar rounded>
+              <img :src="global.user.user_metadata.avatar_url" />
+            </q-avatar>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{
+              global.user.user_metadata.full_name
+            }}</q-item-label>
+            <q-item-label caption v-if="global.admin">Admin</q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <q-btn flat dense round icon="logout" @click="logout" />
+          </q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
@@ -106,6 +119,7 @@ const toggleLeftDrawer = () => {
 const global = useGlobal();
 const email = ref("");
 const $q = useQuasar();
+const dropdown = ref(null);
 const signInWithDiscord = async () => {
   var options = {
     provider: "discord",

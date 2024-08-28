@@ -19,6 +19,11 @@
           type="textarea"
           class="col-12"
         />
+        <q-toggle
+          label="Afficher la vidéo"
+          v-model="newVideo"
+          v-if="['accueil', 'spi', 'jeux', 'info'].includes(tab)"
+        />
       </q-card-section>
       <q-separator />
       <q-card-actions align="right">
@@ -56,12 +61,14 @@ export default defineComponent({
       useDialogPluginComponent();
 
     const newInfo = ref("");
+    const newVideo = ref(true);
     const info = computed(() => global.info(props.tab));
 
     watch(
       () => props.tab,
       () => {
         newInfo.value = info.value;
+        newVideo.value = global.video(props.tab);
       },
       { immediate: true }
     );
@@ -86,11 +93,12 @@ export default defineComponent({
       )
         var d = await supabase
           .from("holygames-planning-info")
-          .update({ content: newInfo.value })
+          .update({ content: newInfo.value, video: newVideo.value })
           .match({ tab: props.tab, event: global.currentEventId });
       else
         var d = await supabase.from("holygames-planning-info").insert({
           content: newInfo.value,
+          video: newVideo.value,
           tab: props.tab,
           event: global.currentEventId,
         });
@@ -101,6 +109,7 @@ export default defineComponent({
 
     return {
       newInfo,
+      newVideo,
       updateEvent,
       dialogRef,
       onDialogHide,

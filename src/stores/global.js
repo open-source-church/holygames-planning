@@ -86,15 +86,19 @@ export const useGlobal = defineStore("global", () => {
     // },
   });
 
-  const admin = computed(
-    () =>
-      user.value &&
-      [
-        "fdf346ea-bafb-464f-9efd-9aa267392902",
-        "07d80885-6e51-4e12-bb02-7ff968bc2321",
-        "a8c611ae-ddb0-4b5b-b4e7-946354a9b673",
-      ].includes(user.value.id)
-  );
+  var _admin = -1;
+  const admin = ref(false);
+  const checkAdmin = async () => {
+    console.log("Checking admin...");
+    if (!user.value || _admin != -1) admin.value = false;
+    else {
+      var { data } = await supabase.rpc("holygames_planning_is_admin", {
+        id: user.value.id,
+      });
+      admin.value = data ? data : false;
+    }
+    console.log("Yeah we checked, admin is", admin.value);
+  };
 
   const srcById = computed(() => {
     console.log(eventsSrc.value);
@@ -182,10 +186,18 @@ export const useGlobal = defineStore("global", () => {
     return r;
   };
 
+  // Returns the info for the given tab
   const info = computed(() => {
     return (name) => {
       var tab = infoSrc.value.find((i) => i.tab == name);
       return tab ? tab.content : "";
+    };
+  });
+
+  const video = computed(() => {
+    return (name) => {
+      var tab = infoSrc.value.find((i) => i.tab == name);
+      return tab ? tab.video : true;
     };
   });
 
@@ -275,6 +287,7 @@ export const useGlobal = defineStore("global", () => {
     eventsList,
     eventsSrc,
     infoSrc,
+    video,
     currentEventId,
     days,
     categories,
@@ -293,5 +306,6 @@ export const useGlobal = defineStore("global", () => {
     dayRange,
     daysNames,
     currentEvent,
+    checkAdmin,
   };
 });

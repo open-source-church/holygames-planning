@@ -6,19 +6,35 @@
   >
     <q-tab-panels v-model="tab" animated class="col column full-width">
       <q-tab-panel name="accueil">
-        <q-video :ratio="16/9" src="https://www.youtube.com/embed/XIIGx8drZB8" />
+        <q-video
+          v-if="global.video('accueil')"
+          :ratio="16 / 9"
+          src="https://www.youtube.com/embed/XIIGx8drZB8"
+        />
         <div v-html="info('accueil')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="info">
-        <q-video :ratio="16/9" src="https://www.youtube.com/embed/bByuRYAB7NU" />
+        <q-video
+          v-if="global.video('info')"
+          :ratio="16 / 9"
+          src="https://www.youtube.com/embed/bByuRYAB7NU"
+        />
         <div v-html="info('info')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="spi">
-        <q-video :ratio="16/9" src="https://www.youtube.com/embed/lRSDQ_t8pNA" />
+        <q-video
+          v-if="global.video('spi')"
+          :ratio="16 / 9"
+          src="https://www.youtube.com/embed/lRSDQ_t8pNA"
+        />
         <div v-html="info('spi')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="jeux">
-        <q-video :ratio="16/9" src="https://www.youtube.com/embed/3Ds_SgbWDXs" />
+        <q-video
+          v-if="global.video('jeux')"
+          :ratio="16 / 9"
+          src="https://www.youtube.com/embed/3Ds_SgbWDXs"
+        />
         <div v-html="info('jeux')" class="q-mb-xl" />
       </q-tab-panel>
       <q-tab-panel name="kids">
@@ -86,7 +102,10 @@ frameborder="0"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
 </iframe>
       `;
-      html = html.replaceAll(/https:\/\/www.youtube.com\/watch\?v=([^\s]*)/gi, frame);
+      html = html.replaceAll(
+        /https:\/\/www.youtube.com\/watch\?v=([^\s]*)/gi,
+        frame
+      );
 
       return html;
     };
