@@ -12,8 +12,8 @@
         "
       >
         <q-item-section>
-          <q-item-label>{{ e.name }}</q-item-label>
-          <q-item-label caption>{{ e.date }}</q-item-label>
+          <q-item-label caption>{{ e.name }}</q-item-label>
+          <q-item-label>{{ e.date }}</q-item-label>
         </q-item-section>
         <q-item-section top side>
           <div class="text-grey-8 q-gutter-xs">
@@ -118,6 +118,33 @@
           </q-input>
         </div>
       </q-card-section>
+      <q-card-section>
+        <div class="row">
+          <q-select
+            class="col"
+            v-model="clone_from_event"
+            :options="list.filter((e) => current.id != e.id)"
+            :option-label="(o) => o.name + ': ' + o.date"
+            label="Copier les événements et info depuis:"
+            hint="Évenement à cloner"
+          />
+          <q-btn
+            class="col-auto text-primary"
+            flat
+            icon="content_copy"
+            label="Copier"
+            @click="clone_event"
+          />
+          <q-separator vertical inset />
+          <q-btn
+            class="col-auto text-negative"
+            flat
+            icon="delete"
+            label="Supprimer tous les événements"
+            @click="clear_events"
+          />
+        </div>
+      </q-card-section>
       <q-banner
         class="text-white bg-red"
         v-if="
@@ -160,6 +187,7 @@ import {
 import { useGlobal } from "stores/global";
 import { _ } from "lodash";
 import { supabase } from "../supabase";
+import { useQuasar } from "quasar";
 
 const global = useGlobal();
 
@@ -224,6 +252,75 @@ const setActiveEvent = async (id) => {
     .match({ id: current.value.id });
   current.value = {};
   global.fetchEvents();
+};
+
+const $q = useQuasar();
+
+// Clone events
+const clone_from_event = ref();
+
+const clone_event = async () => {
+  if (!clone_from_event.value?.id) {
+    $q.notify("Choisis un événement source à coper, s'il te plait.");
+    return;
+  }
+
+  console.log(clone_from_event.value);
+  console.log(current.value.id);
+
+  const { data } = await supabase
+    .from("holygames-planning-activities")
+    .select()
+    .eq("event", clone_from_event.value.id);
+  data.forEach((e) => (e.event = current.value.id));
+  data.forEach((e) => delete e.id);
+  data.forEach((e) => delete e.created_at);
+
+  const { error } = await supabase
+    .from("holygames-planning-activities")
+    .insert(data);
+  console.log(error);
+  if (error) $q.notify("Erreur: ", error);
+  else $q.notify(`${data.length} événements copiés avec succès.`);
+
+  const r_infos = await supabase
+    .from("holygames-planning-info")
+    .select()
+    .eq("event", clone_from_event.value.id);
+
+  r_infos.data.forEach((e) => (e.event = current.value.id));
+  r_infos.data.forEach((e) => delete e.id);
+  r_infos.data.forEach((e) => delete e.created_at);
+
+  const response = await supabase
+    .from("holygames-planning-info")
+    .insert(r_infos.data);
+  if (response.error) $q.notify("Erreur: ", response.error);
+  else $q.notify(`${r_infos.data.length} infos copiés avec succès.`);
+};
+const clear_events = async () => {
+  console.log(current.value.id);
+
+  const response = await supabase
+    .from("holygames-planning-activities")
+    .delete()
+    .eq("event", current.value.id);
+
+  if (!response.error) {
+    $q.notify(`Toutes activités supprimées avec succès.`);
+  } else {
+    $q.notify(`Erreur: ${response.error}`);
+  }
+  const response2 = await supabase
+    .from("holygames-planning-info")
+    .delete()
+    .eq("event", current.value.id);
+
+  if (!response2.error) {
+    $q.notify(`Toutes infos supprimées avec succès.`);
+  } else {
+    $q.notify(`Erreur: ${response2.error}`);
+  }
 };
 </script>
 

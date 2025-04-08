@@ -87,6 +87,7 @@ export const useGlobal = defineStore("global", () => {
   });
 
   var _admin = -1;
+
   const admin = ref(false);
   const checkAdmin = async () => {
     console.log("Checking admin...");
